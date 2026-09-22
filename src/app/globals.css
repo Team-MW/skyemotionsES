@@ -1,0 +1,171 @@
+@import "tailwindcss";
+
+:root {
+  --background: #121212;
+  --foreground: #ffffff;
+  --accent: #e2ff00;
+  --accent-hover: #d4f000;
+  --muted: #a8a8a8;
+  --surface: #1a1a1a;
+  --nav: #0e0e0e;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-muted: var(--muted);
+  --color-surface: var(--surface);
+  --color-nav: var(--nav);
+  --font-sans: var(--font-outfit);
+  --font-display: var(--font-barlow);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-outfit), sans-serif;
+  overflow-x: clip;
+}
+
+/* Touch-friendly tap highlights */
+a,
+button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+@keyframes hero-in {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse-glow {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(226, 255, 0, 0.35);
+  }
+  50% {
+    box-shadow: 0 0 0 12px rgba(226, 255, 0, 0);
+  }
+}
+
+.animate-hero-in {
+  animation: hero-in 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.animate-hero-in-delay {
+  animation: hero-in 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.18s both;
+}
+
+.animate-fade-up {
+  animation: fade-up 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.animate-cta-glow {
+  animation: pulse-glow 2.8s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-hero-in,
+  .animate-hero-in-delay,
+  .animate-fade-up,
+  .animate-cta-glow {
+    animation: none;
+  }
+}
+
+.reviews-scroll {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.reviews-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.social-icon {
+  position: relative;
+  transition: box-shadow 0.35s ease, filter 0.35s ease;
+}
+
+.social-icon--instagram {
+  background: radial-gradient(
+    circle at 30% 107%,
+    #fdf497 0%,
+    #fdf497 5%,
+    #fd5949 45%,
+    #d6249f 60%,
+    #285aeb 90%
+  );
+  box-shadow:
+    0 14px 28px rgba(214, 36, 159, 0.35),
+    0 4px 10px rgba(0, 0, 0, 0.25);
+}
+
+.social-icon--facebook {
+  background: linear-gradient(145deg, #4fa3ff 0%, #1877f2 48%, #0b5fcc 100%);
+  box-shadow:
+    0 14px 28px rgba(24, 119, 242, 0.4),
+    0 4px 10px rgba(0, 0, 0, 0.25);
+}
+
+.group:hover .social-icon--instagram,
+.group:focus-visible .social-icon--instagram {
+  box-shadow:
+    0 20px 40px rgba(214, 36, 159, 0.5),
+    0 8px 16px rgba(0, 0, 0, 0.3);
+  filter: brightness(1.06);
+}
+
+.group:hover .social-icon--facebook,
+.group:focus-visible .social-icon--facebook {
+  box-shadow:
+    0 20px 40px rgba(24, 119, 242, 0.55),
+    0 8px 16px rgba(0, 0, 0, 0.3);
+  filter: brightness(1.06);
+}
+
+@keyframes partners-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.partners-marquee {
+  animation: partners-scroll 35s linear infinite;
+}
+
+.partners-marquee:hover {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .partners-marquee {
+    animation: none;
+  }
+}
