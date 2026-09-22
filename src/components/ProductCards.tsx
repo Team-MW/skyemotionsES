@@ -1,12 +1,68 @@
 "use client";
 
-import Image from "next/image";
 import { useCart } from "@/context/CartContext";
-import { CATALOG, formatEUR } from "@/lib/catalog";
+import { CATALOG, formatEUR, type CatalogProduct } from "@/lib/catalog";
 
 type ProductCardsProps = {
   ids?: string[];
 };
+
+function CheckIcon() {
+  return (
+    <svg
+      viewBox="0 0 20 20"
+      className="mt-0.5 h-4 w-4 shrink-0 text-accent"
+      fill="currentColor"
+      aria-hidden
+    >
+      <path
+        fillRule="evenodd"
+        d="M16.7 5.3a1 1 0 0 1 0 1.4l-7.2 7.2a1 1 0 0 1-1.4 0L3.3 9.1a1 1 0 1 1 1.4-1.4l4.1 4.1 6.5-6.5a1 1 0 0 1 1.4 0Z"
+        clipRule="evenodd"
+      />
+    </svg>
+  );
+}
+
+function PricingCard({
+  product,
+  onAdd,
+}: {
+  product: CatalogProduct;
+  onAdd: () => void;
+}) {
+  return (
+    <article className="flex h-full flex-col bg-[#2a2a2a] px-6 py-8 text-center sm:px-8 sm:py-10">
+      <h3 className="font-display text-[1.35rem] font-bold uppercase leading-tight tracking-[0.04em] text-accent sm:text-[1.5rem]">
+        {product.name}
+      </h3>
+      <p className="mt-2 text-sm font-light text-white/80 sm:text-base">
+        {product.description}
+      </p>
+
+      <p className="font-display mt-8 text-5xl font-bold tracking-tight text-accent sm:text-6xl">
+        {formatEUR(product.priceCents).replace(/\s/g, "")}
+      </p>
+
+      <ul className="mt-8 flex-1 space-y-3.5 text-left">
+        {product.features.map((feature) => (
+          <li key={feature} className="flex gap-3 text-sm leading-snug text-white sm:text-[0.95rem]">
+            <CheckIcon />
+            <span>{feature}</span>
+          </li>
+        ))}
+      </ul>
+
+      <button
+        type="button"
+        onClick={onAdd}
+        className="font-display mt-10 w-full rounded-lg bg-accent py-3.5 text-sm font-bold uppercase tracking-[0.12em] text-black transition hover:bg-accent-hover active:scale-[0.99]"
+      >
+        Reservar ahora
+      </button>
+    </article>
+  );
+}
 
 export default function ProductCards({ ids }: ProductCardsProps) {
   const { addItem } = useCart();
@@ -15,58 +71,13 @@ export default function ProductCards({ ids }: ProductCardsProps) {
     : CATALOG;
 
   return (
-    <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
+    <div className="mx-auto grid max-w-[1100px] gap-5 md:grid-cols-3 md:gap-6">
       {products.map((product) => (
-        <article
+        <PricingCard
           key={product.id}
-          className={`flex flex-col overflow-hidden border ${
-            product.featured
-              ? "border-accent bg-surface"
-              : "border-white/10 bg-surface/80"
-          }`}
-        >
-          <div className="relative aspect-[4/3]">
-            <Image
-              src={product.image}
-              alt=""
-              fill
-              className="object-cover"
-              sizes="(max-width: 640px) 100vw, 25vw"
-            />
-            {product.featured && (
-              <span className="font-display absolute left-3 top-3 bg-accent px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-black">
-                Popular
-              </span>
-            )}
-          </div>
-          <div className="flex flex-1 flex-col p-5">
-            <h3 className="font-display text-lg font-bold uppercase tracking-wide text-white">
-              {product.name}
-            </h3>
-            <p className="mt-2 flex-1 text-sm font-light leading-relaxed text-white/65">
-              {product.description}
-            </p>
-            <ul className="mt-4 space-y-1.5">
-              {product.features.slice(0, 3).map((f) => (
-                <li key={f} className="text-xs text-white/50">
-                  · {f}
-                </li>
-              ))}
-            </ul>
-            <div className="mt-5 flex items-end justify-between gap-3">
-              <p className="font-display text-xl font-bold text-accent">
-                {formatEUR(product.priceCents)}
-              </p>
-              <button
-                type="button"
-                onClick={() => addItem(product.id)}
-                className="font-display shrink-0 bg-accent px-4 py-2.5 text-xs font-bold uppercase tracking-wide text-black transition hover:bg-accent-hover"
-              >
-                Añadir
-              </button>
-            </div>
-          </div>
-        </article>
+          product={product}
+          onAdd={() => addItem(product.id)}
+        />
       ))}
     </div>
   );

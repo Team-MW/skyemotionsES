@@ -11,9 +11,9 @@ export const NAV_ITEMS: NavItem[] = [
     label: "CUPONES REGALO",
     href: "/cupones-regalo",
     children: [
-      { label: "Salto tándem", href: "/cupones-regalo/salto-tandem" },
-      { label: "Pack experiencia", href: "/cupones-regalo/pack-experiencia" },
-      { label: "Tarjeta regalo", href: "/cupones-regalo/tarjeta-regalo" },
+      { label: "Salto tándem 199€", href: "/precios" },
+      { label: "Tándem + vídeo 269€", href: "/precios" },
+      { label: "Vídeo + fotos 349€", href: "/precios" },
     ],
   },
   { label: "PRECIOS", href: "/precios" },

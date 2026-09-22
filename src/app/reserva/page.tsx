@@ -7,19 +7,19 @@ import SiteShell from "@/components/SiteShell";
 export const metadata: Metadata = {
   title: "Reserva tu salto",
   description:
-    "Elige tu experiencia Sky Emotions, añádela al carrito y reserva ahora o más tarde. Pago seguro con Stripe.",
+    "Reserva salto tándem desde 199€, con vídeo 269€ o vídeo + fotos 349€. Añade al carrito y paga cuando quieras.",
 };
 
 const STEPS = [
   {
     n: "01",
-    title: "Elige y añade al carrito",
-    text: "Varias experiencias: tándem, pack vídeo, cupón o tarjeta regalo.",
+    title: "Elige tu pack",
+    text: "Tándem, tándem + vídeo, o tándem + vídeo + fotos.",
   },
   {
     n: "02",
-    title: "Guarda y vuelve cuando quieras",
-    text: "Tu carrito se conserva en el navegador. Reserva más tarde sin perder nada.",
+    title: "Añade al carrito",
+    text: "Guarda tu selección y vuelve cuando quieras — el carrito se conserva.",
   },
   {
     n: "03",
@@ -34,17 +34,12 @@ export default function ReservaPage() {
       <PageHero
         eyebrow="Reserva"
         title="Elige tu experiencia"
-        description="Añade una o varias opciones al carrito. Puedes pagar ahora o guardar y reservar más tarde."
+        description="Tres packs claros. Añade al carrito y reserva ahora o más tarde."
         cta={{ label: "Ver carrito / pagar", href: "/checkout" }}
       />
 
       <section className="border-b border-white/5 bg-background px-4 py-14 sm:px-6 sm:py-20">
-        <div className="mx-auto max-w-[1200px]">
-          <h2 className="font-display mb-8 text-center text-sm font-bold uppercase tracking-[0.25em] text-accent">
-            Experiencias
-          </h2>
-          <ProductCards />
-        </div>
+        <ProductCards />
       </section>
 
       <section className="border-b border-white/5 bg-surface px-4 py-14 sm:px-6 sm:py-16">
@@ -67,7 +62,7 @@ export default function ReservaPage() {
 
       <section className="bg-background px-4 py-12 text-center sm:py-16">
         <p className="text-white/60">
-          ¿Dudas antes de comprar?{" "}
+          ¿Dudas?{" "}
           <Link href="/contacto" className="text-accent hover:underline">
             Contáctanos
           </Link>{" "}

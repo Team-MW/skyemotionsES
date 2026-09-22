@@ -12,67 +12,48 @@ export type CatalogProduct = {
   stripePriceId?: string;
 };
 
+/** Tarifs officiels Sky Emotions */
 export const CATALOG: CatalogProduct[] = [
   {
     id: "salto-tandem",
     name: "Salto tándem",
     shortName: "Tándem",
-    description:
-      "La experiencia esencial: teórica, vuelo a 4200 m y caída libre con instructor certificado.",
+    description: "Salto tándem",
     features: [
-      "Teórica + equipo",
-      "Vuelo a 4200 m",
-      "Caída libre ~60 s",
-      "Instructor certificado",
+      "Instrucción teórica previa al salto",
+      "20 minutos de vuelo en nuestro avión",
+      "60 segundos aprox. de caída libre",
+      "8 minutos aprox. de vuelo con el paracaídas",
+      "Diploma acreditativo de la actividad",
     ],
-    priceCents: 29000,
+    priceCents: 19900,
     image: "/images/salto-sonrisa.jpg",
   },
   {
-    id: "pack-experiencia",
-    name: "Pack experiencia",
-    shortName: "Pack vídeo",
-    description:
-      "Salto tándem + vídeo y fotos profesionales para revivir cada segundo.",
+    id: "salto-tandem-video",
+    name: "Salto tándem vídeo",
+    shortName: "Tándem + vídeo",
+    description: "Salto tándem + Video",
     features: [
-      "Todo el salto tándem",
-      "Vídeo profesional",
-      "Fotos en freefall",
-      "Entrega digital",
+      "El pack de salto tándem",
+      "Vídeo del salto, grabado por tu instructor con GoPro, en calidad FHD",
     ],
-    priceCents: 37000,
+    priceCents: 26900,
     image: "/images/salto-freefall.jpg",
     featured: true,
   },
   {
-    id: "cupon-tandem",
-    name: "Cupón regalo tándem",
-    shortName: "Cupón",
-    description:
-      "Regala un salto sin fecha fija. Canjeable según disponibilidad y meteorología.",
+    id: "salto-tandem-video-fotos",
+    name: "Salto tándem vídeo + fotos",
+    shortName: "Tándem + vídeo + fotos",
+    description: "Salto tándem + Video + Fotos",
     features: [
-      "Sin fecha fija",
-      "Ideal como regalo",
-      "Válido temporada",
-      "Asesoramiento incluido",
+      "Instrucción teórica previa al salto",
+      "Vídeo del salto, grabado por tu instructor con GoPro, en calidad FHD",
+      "Fotos de la actividad",
     ],
-    priceCents: 29000,
-    image: "/images/vuelo-avion.jpg",
-  },
-  {
-    id: "tarjeta-regalo-150",
-    name: "Tarjeta regalo 150 €",
-    shortName: "Tarjeta 150€",
-    description:
-      "Importe flexible para que elijan la experiencia que prefieran.",
-    features: [
-      "Importe 150 €",
-      "Canjeable en el centro",
-      "Diseño digital",
-      "Perfecta para regalar",
-    ],
-    priceCents: 15000,
-    image: "/images/vuelo-avion.jpg",
+    priceCents: 34900,
+    image: "/images/salto-freefall.jpg",
   },
 ];
 
