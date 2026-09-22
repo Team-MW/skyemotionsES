@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import Stripe from "stripe";
 import { getProduct } from "@/lib/catalog";
+import { getSiteUrl, getStripe } from "@/lib/stripe";
 
 type BodyItem = { productId: string; quantity: number };
 
@@ -8,7 +8,6 @@ export async function POST(req: Request) {
   let body: {
     items?: BodyItem[];
     customerEmail?: string;
-    customerName?: string;
   };
 
   try {
@@ -25,16 +24,14 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Carrito vacío" }, { status: 400 });
   }
 
-  const secret = process.env.STRIPE_SECRET_KEY;
-  const siteUrl =
-    process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ||
-    "http://127.0.0.1:3200";
+  const stripe = getStripe();
+  const siteUrl = getSiteUrl();
 
-  if (!secret) {
+  if (!stripe) {
     return NextResponse.json(
       {
         error:
-          "Stripe no está configurado. Añade STRIPE_SECRET_KEY en .env.local / Vercel para activar el pago.",
+          "Stripe no está configurado. Añade STRIPE_SECRET_KEY en .env.local / Vercel.",
         demo: true,
       },
       { status: 503 },
@@ -42,45 +39,50 @@ export async function POST(req: Request) {
   }
 
   try {
-    const stripe = new Stripe(secret);
-
-    const line_items: Stripe.Checkout.SessionCreateParams.LineItem[] =
-      items.map((i) => {
-        const product = getProduct(i.productId)!;
-        if (product.stripePriceId) {
-          return {
-            price: product.stripePriceId,
-            quantity: i.quantity,
-          };
-        }
+    const line_items = items.map((i) => {
+      const product = getProduct(i.productId)!;
+      if (product.stripePriceId) {
         return {
+          price: product.stripePriceId,
           quantity: i.quantity,
-          price_data: {
-            currency: "eur",
-            unit_amount: product.priceCents,
-            product_data: {
-              name: product.name,
-              description: product.description.slice(0, 200),
-            },
-          },
         };
-      });
+      }
+      return {
+        quantity: i.quantity,
+        price_data: {
+          currency: "eur" as const,
+          unit_amount: product.priceCents,
+          product_data: {
+            name: product.name,
+            description: product.description.slice(0, 200),
+          },
+        },
+      };
+    });
+
+    const productIds = items
+      .map((i) => `${i.productId}:${i.quantity}`)
+      .join(",");
 
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
+      locale: "es",
       line_items,
       success_url: `${siteUrl}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${siteUrl}/checkout`,
       customer_email: body.customerEmail || undefined,
+      billing_address_collection: "auto",
+      phone_number_collection: { enabled: true },
       metadata: {
-        customerName: body.customerName || "",
+        productIds,
         source: "skyemotions-web",
+        booking_complete: "false",
       },
     });
 
     return NextResponse.json({ url: session.url });
   } catch (err) {
-    console.error(err);
+    console.error("[checkout]", err);
     return NextResponse.json(
       { error: "Error al crear la sesión de Stripe." },
       { status: 500 },

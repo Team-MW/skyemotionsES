@@ -10,7 +10,6 @@ export default function CheckoutClient() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [email, setEmail] = useState("");
-  const [name, setName] = useState("");
 
   async function payWithStripe() {
     setError(null);
@@ -25,7 +24,6 @@ export default function CheckoutClient() {
             quantity: i.quantity,
           })),
           customerEmail: email || undefined,
-          customerName: name || undefined,
         }),
       });
       const data = (await res.json()) as {
@@ -115,18 +113,7 @@ export default function CheckoutClient() {
 
         <label className="mt-6 block">
           <span className="mb-1.5 block text-xs uppercase tracking-wider text-muted">
-            Nombre
-          </span>
-          <input
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            className="w-full border border-white/15 bg-black/40 px-4 py-3 text-white outline-none focus:border-accent"
-            placeholder="Tu nombre"
-          />
-        </label>
-        <label className="mt-4 block">
-          <span className="mb-1.5 block text-xs uppercase tracking-wider text-muted">
-            Email
+            Email (opcional)
           </span>
           <input
             type="email"
@@ -153,8 +140,8 @@ export default function CheckoutClient() {
         </button>
 
         <p className="mt-4 text-center text-xs leading-relaxed text-white/45">
-          Puedes cerrar y volver más tarde: tu carrito se guarda en este
-          navegador. Stripe se activará con las claves del servidor.
+          Tras el pago, se abrirá un formulario exclusivo para completar tus
+          datos del salto. El carrito se guarda en este navegador.
         </p>
 
         <button

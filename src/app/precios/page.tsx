@@ -9,7 +9,7 @@ import SiteShell from "@/components/SiteShell";
 export const metadata: Metadata = {
   title: "Precios",
   description:
-    "Tarifas Sky Emotions: tándem desde 199€, VIP helicóptero, IMAX 360º, vídeo 4K, ticket titulados y rigger.",
+    "Tarifas Sky Emotions: tándem + vídeo desde 269€, VIP helicóptero, IMAX 360º, vídeo 4K, ticket titulados y rigger.",
 };
 
 export default function PreciosPage() {

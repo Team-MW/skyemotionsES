@@ -71,7 +71,7 @@ export default function ProductCards({ ids }: ProductCardsProps) {
     : CATALOG;
 
   return (
-    <div className="mx-auto grid max-w-[1100px] gap-5 md:grid-cols-3 md:gap-6">
+    <div className="mx-auto grid max-w-[900px] gap-5 md:grid-cols-2 md:gap-6">
       {products.map((product) => (
         <PricingCard
           key={product.id}

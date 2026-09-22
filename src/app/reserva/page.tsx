@@ -7,7 +7,7 @@ import SiteShell from "@/components/SiteShell";
 export const metadata: Metadata = {
   title: "Reserva tu salto",
   description:
-    "Reserva salto tándem desde 199€, con vídeo 269€ o vídeo + fotos 349€. Añade al carrito y paga cuando quieras.",
+    "Reserva salto tándem + vídeo desde 269€ o vídeo + fotos 349€. Añade al carrito y paga cuando quieras.",
 };
 
 const STEPS = [

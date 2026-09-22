@@ -32,7 +32,7 @@ const EXPERIENCES = [
   {
     id: "salto-tandem",
     title: "Salto tándem",
-    subtitle: "La experiencia esencial desde 199€",
+    subtitle: "La experiencia esencial desde 269€",
     image: "/images/salto-tandem2.png",
     imageAlt: "Salida del avión en salto tándem",
     href: "/reserva",

@@ -15,28 +15,16 @@ export type CatalogProduct = {
 /** Tarifs officiels Sky Emotions */
 export const CATALOG: CatalogProduct[] = [
   {
-    id: "salto-tandem",
-    name: "Salto tándem",
-    shortName: "Tándem",
-    description: "Salto tándem",
+    id: "salto-tandem-video",
+    name: "Salto tándem vídeo",
+    shortName: "Tándem + vídeo",
+    description: "Salto tándem + Video",
     features: [
       "Instrucción teórica previa al salto",
       "20 minutos de vuelo en nuestro avión",
       "60 segundos aprox. de caída libre",
       "8 minutos aprox. de vuelo con el paracaídas",
       "Diploma acreditativo de la actividad",
-    ],
-    priceCents: 19900,
-    image: "/images/salto-sonrisa.jpg",
-  },
-  {
-    id: "salto-tandem-video",
-    name: "Salto tándem vídeo",
-    shortName: "Tándem + vídeo",
-    description: "Salto tándem + Video",
-    features: [
-      "El pack de salto tándem",
-      "Vídeo del salto, grabado por tu instructor con GoPro, en calidad FHD",
     ],
     priceCents: 26900,
     image: "/images/salto-freefall.jpg",
