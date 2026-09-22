@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useId, useRef, useState } from "react";
+import CartButton from "@/components/CartButton";
 import { NAV_ITEMS } from "@/lib/navigation";
 
 function Chevron({ open }: { open?: boolean }) {
@@ -147,17 +148,19 @@ export default function Navbar() {
               })}
             </nav>
 
-            <button
-              type="button"
-              className="relative z-10 -mr-1 flex h-11 w-11 items-center justify-center rounded-md text-white transition-colors hover:bg-white/5 xl:hidden"
-              aria-label={mobileOpen ? "Cerrar menú" : "Abrir menú"}
-              aria-expanded={mobileOpen}
-              aria-controls={menuId}
-              onClick={() => {
-                setMobileOpen((v) => !v);
-                setOpenMenu(null);
-              }}
-            >
+            <div className="flex items-center gap-1">
+              <CartButton />
+              <button
+                type="button"
+                className="relative z-10 -mr-1 flex h-11 w-11 items-center justify-center rounded-md text-white transition-colors hover:bg-white/5 xl:hidden"
+                aria-label={mobileOpen ? "Cerrar menú" : "Abrir menú"}
+                aria-expanded={mobileOpen}
+                aria-controls={menuId}
+                onClick={() => {
+                  setMobileOpen((v) => !v);
+                  setOpenMenu(null);
+                }}
+              >
               <span className="sr-only">Menú</span>
               <span className="relative block h-4 w-6" aria-hidden>
                 <span
@@ -177,14 +180,15 @@ export default function Navbar() {
                 />
               </span>
             </button>
+            </div>
           </div>
         </div>
       </header>
 
-      {/* Hors du blur : fixed fonctionne correctement */}
+      {/* Menu móvil: full viewport — evita hueco al hacer scroll */}
       <div
         id={menuId}
-        className={`fixed inset-x-0 bottom-0 top-[calc(4rem+env(safe-area-inset-top))] z-40 sm:top-[calc(4.5rem+env(safe-area-inset-top))] lg:top-[calc(5rem+env(safe-area-inset-top))] xl:hidden ${
+        className={`fixed inset-0 z-40 xl:hidden ${
           mobileOpen ? "pointer-events-auto" : "pointer-events-none"
         }`}
         aria-hidden={!mobileOpen}
@@ -201,10 +205,23 @@ export default function Navbar() {
 
         <nav
           aria-label="Móvil"
-          className={`absolute right-0 top-0 flex h-full w-[min(100%,20rem)] flex-col overflow-y-auto overscroll-contain border-l border-white/10 bg-nav px-4 pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-2 shadow-2xl transition-transform duration-300 ease-out sm:w-[22rem] sm:px-5 ${
+          className={`absolute right-0 top-0 flex h-full w-[min(100%,20rem)] flex-col overflow-y-auto overscroll-contain border-l border-white/10 bg-nav px-4 pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-[max(1rem,env(safe-area-inset-top))] shadow-2xl transition-transform duration-300 ease-out sm:w-[22rem] sm:px-5 ${
             mobileOpen ? "translate-x-0" : "translate-x-full"
           }`}
         >
+          <div className="mb-2 flex h-14 items-center justify-between border-b border-white/10">
+            <span className="font-display text-sm font-semibold tracking-[0.2em] text-accent">
+              MENÚ
+            </span>
+            <button
+              type="button"
+              className="flex h-10 w-10 items-center justify-center text-white hover:text-accent"
+              aria-label="Cerrar menú"
+              onClick={closeMobile}
+            >
+              ✕
+            </button>
+          </div>
           {NAV_ITEMS.map((item) => {
             const hasChildren = Boolean(item.children?.length);
             const isOpen = openMenu === item.label;

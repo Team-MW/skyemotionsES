@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import Stripe from "stripe";
 import { getProduct } from "@/lib/catalog";
 
 type BodyItem = { productId: string; quantity: number };
@@ -29,12 +30,11 @@ export async function POST(req: Request) {
     process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ||
     "http://127.0.0.1:3200";
 
-  // Stripe pas encore branché : réponse claire pour le front
   if (!secret) {
     return NextResponse.json(
       {
         error:
-          "Stripe no está configurado. Añade STRIPE_SECRET_KEY en .env.local para activar el pago.",
+          "Stripe no está configurado. Añade STRIPE_SECRET_KEY en .env.local / Vercel para activar el pago.",
         demo: true,
       },
       { status: 503 },
@@ -42,34 +42,29 @@ export async function POST(req: Request) {
   }
 
   try {
-    // Dynamic import so the app builds without stripe installed as hard fail
-    // when key missing — we still install the package.
-    const Stripe = (await import("stripe")).default;
     const stripe = new Stripe(secret);
 
-    const line_items = items.map((i) => {
-      const product = getProduct(i.productId)!;
-      if (product.stripePriceId) {
+    const line_items: Stripe.Checkout.SessionCreateParams.LineItem[] =
+      items.map((i) => {
+        const product = getProduct(i.productId)!;
+        if (product.stripePriceId) {
+          return {
+            price: product.stripePriceId,
+            quantity: i.quantity,
+          };
+        }
         return {
-          price: product.stripePriceId,
           quantity: i.quantity,
-        };
-      }
-      return {
-        quantity: i.quantity,
-        price_data: {
-          currency: "eur",
-          unit_amount: product.priceCents,
-          product_data: {
-            name: product.name,
-            description: product.description.slice(0, 200),
-            images: product.image.startsWith("http")
-              ? [product.image]
-              : undefined,
+          price_data: {
+            currency: "eur",
+            unit_amount: product.priceCents,
+            product_data: {
+              name: product.name,
+              description: product.description.slice(0, 200),
+            },
           },
-        },
-      };
-    });
+        };
+      });
 
     const session = await stripe.checkout.sessions.create({
       mode: "payment",

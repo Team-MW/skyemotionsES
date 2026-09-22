@@ -7,6 +7,7 @@ const siteUrl =
 const routes = [
   "",
   "/reserva",
+  "/checkout",
   "/cupones-regalo",
   "/cupones-regalo/salto-tandem",
   "/cupones-regalo/pack-experiencia",
