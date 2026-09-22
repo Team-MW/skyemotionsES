@@ -3,40 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useId, useRef, useState } from "react";
-
-type NavItem = {
-  label: string;
-  href: string;
-  children?: { label: string; href: string }[];
-};
-
-const NAV_ITEMS: NavItem[] = [
-  { label: "INICIO", href: "/" },
-  { label: "RESERVA", href: "#reserva" },
-  {
-    label: "CUPONES REGALO",
-    href: "#cupones",
-    children: [
-      { label: "Salto tándem", href: "#cupones" },
-      { label: "Pack experiencia", href: "#cupones" },
-      { label: "Tarjeta regalo", href: "#cupones" },
-    ],
-  },
-  { label: "PRECIOS", href: "#precios" },
-  { label: "EL CENTRO", href: "#centro" },
-  { label: "REDES", href: "#redes" },
-  { label: "CONTACTO", href: "#contacto" },
-  {
-    label: "+INFO",
-    href: "#info",
-    children: [
-      { label: "Requisitos", href: "#requisitos" },
-      { label: "El salto", href: "#resumen" },
-      { label: "Opiniones", href: "#opiniones" },
-      { label: "Redes", href: "#redes" },
-    ],
-  },
-];
+import { NAV_ITEMS } from "@/lib/navigation";
 
 function Chevron({ open }: { open?: boolean }) {
   return (

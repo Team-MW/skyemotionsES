@@ -47,7 +47,7 @@ export default function Hero() {
         </h1>
 
         <Link
-          href="#requisitos"
+          href="/info/requisitos"
           className="animate-hero-in-delay animate-cta-glow font-display mt-8 inline-flex w-full max-w-md items-center justify-center rounded-full bg-accent px-5 py-3.5 text-center text-xs font-bold uppercase leading-snug tracking-[0.04em] text-black transition-transform duration-300 hover:scale-[1.02] hover:bg-accent-hover active:scale-[0.98] sm:mt-10 sm:w-auto sm:max-w-none sm:px-8 sm:text-sm sm:tracking-[0.06em] md:text-base"
         >
           Requisitos para realizar un salto

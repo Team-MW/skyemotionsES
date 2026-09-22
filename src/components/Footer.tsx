@@ -1,15 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-
-const FOOTER_LINKS = [
-  { label: "Reserva", href: "#reserva" },
-  { label: "Precios", href: "#precios" },
-  { label: "El centro", href: "#centro" },
-  { label: "Contacto", href: "#contacto" },
-  { label: "Requisitos", href: "#requisitos" },
-  { label: "Opiniones", href: "#opiniones" },
-  { label: "Redes", href: "#redes" },
-];
+import { FOOTER_LINKS } from "@/lib/navigation";
 
 export default function Footer() {
   return (
@@ -71,7 +62,7 @@ export default function Footer() {
           <p className="font-display text-[11px] tracking-[0.12em] text-muted uppercase sm:text-xs">
             © {new Date().getFullYear()} Sky Emotions · skydive & more
           </p>
-          <div className="flex items-center gap-4">
+          <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2">
             <a
               href="mailto:info@skyemotions.es"
               className="text-xs text-muted transition-colors hover:text-accent"
@@ -87,6 +78,15 @@ export default function Footer() {
             >
               Contacto
             </a>
+            <span className="text-white/20" aria-hidden>
+              ·
+            </span>
+            <p className="text-xs text-muted">
+              Réalisé par{" "}
+              <span className="font-semibold tracking-wide text-accent/90">
+                Microdidact
+              </span>
+            </p>
           </div>
         </div>
       </div>

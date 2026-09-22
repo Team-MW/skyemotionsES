@@ -22,16 +22,17 @@
   --font-display: var(--font-barlow);
 }
 
-html {
-  scroll-behavior: smooth;
-}
-
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-outfit), sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
   overflow-x: clip;
 }
+
 
 /* Touch-friendly tap highlights */
 a,
@@ -145,6 +146,51 @@ button {
     0 20px 40px rgba(24, 119, 242, 0.55),
     0 8px 16px rgba(0, 0, 0, 0.3);
   filter: brightness(1.06);
+}
+
+@keyframes whatsapp-pulse {
+  0%,
+  100% {
+    box-shadow: 0 8px 28px rgba(37, 211, 102, 0.45);
+  }
+  50% {
+    box-shadow:
+      0 8px 28px rgba(37, 211, 102, 0.55),
+      0 0 0 12px rgba(37, 211, 102, 0);
+  }
+}
+
+.whatsapp-float {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.75rem;
+  height: 3.75rem;
+  border-radius: 9999px;
+  background: #25d366;
+  color: #fff;
+  box-shadow: 0 8px 28px rgba(37, 211, 102, 0.55);
+  transition: transform 0.25s ease, background 0.25s ease;
+  animation: whatsapp-pulse 2.4s ease-in-out infinite;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.whatsapp-float:hover {
+  background: #20bd5a;
+  transform: scale(1.08);
+}
+
+@media (min-width: 640px) {
+  .whatsapp-float {
+    width: 4.25rem;
+    height: 4.25rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .whatsapp-float {
+    animation: none;
+  }
 }
 
 @keyframes partners-scroll {
