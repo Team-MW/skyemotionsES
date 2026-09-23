@@ -6,6 +6,7 @@ import { useCart } from "@/context/CartContext";
 import { formatEUR } from "@/lib/catalog";
 import type { PaidSessionView } from "@/lib/booking-types";
 
+/** Official embed: https://form.jotform.com/jsform/262644955020355 */
 const JOTFORM_ID = "262644955020355";
 const JOTFORM_SRC = `https://form.jotform.com/${JOTFORM_ID}`;
 
@@ -118,25 +119,14 @@ export default function PostPaymentBookingForm({ session }: Props) {
         </p>
       </div>
 
-      <div className="overflow-hidden bg-white">
-        <iframe
-          id={`JotFormIFrame-${JOTFORM_ID}`}
-          title="Formulario obligatorio de reserva"
-          src={JOTFORM_SRC}
-          allow="geolocation; microphone; camera; fullscreen"
-          className="block w-full border-0"
-          style={{ minHeight: 720, height: "80vh" }}
-        />
-        {/* Equivalent to: <script src="https://form.jotform.com/jsform/262644955020355"></script> */}
-        <script
-          type="text/javascript"
-          src={`https://form.jotform.com/jsform/${JOTFORM_ID}`}
-          async
-          // Loaded via iframe above — script tag kept as documentation of the official embed ID.
-          // eslint-disable-next-line react/no-unknown-property
-          data-jotform-id={JOTFORM_ID}
-        />
-      </div>
+      <iframe
+        id={`JotFormIFrame-${JOTFORM_ID}`}
+        title="Formulario obligatorio de reserva"
+        src={JOTFORM_SRC}
+        allow="geolocation; microphone; camera; fullscreen"
+        className="block w-full border-0 bg-white"
+        style={{ minHeight: 720, height: "80vh" }}
+      />
     </div>
   );
 }
