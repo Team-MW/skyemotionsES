@@ -72,14 +72,14 @@ export default async function CheckoutSuccessPage({ searchParams }: Props) {
       <section className="bg-background px-4 py-14 sm:px-6 sm:py-20">
         <div className="mx-auto mb-10 max-w-2xl text-center">
           <p className="font-display text-xs font-bold uppercase tracking-[0.3em] text-accent">
-            Paso final
+            Paso final obligatorio
           </p>
           <h1 className="font-display mt-3 text-3xl font-bold uppercase tracking-wide text-white sm:text-4xl">
-            Datos del salto
+            Completa tu reserva
           </h1>
           <p className="mt-3 text-white/60">
-            Tu pago está confirmado. Completa el formulario para que organicemos
-            tu experiencia.
+            Tu pago está confirmado. Rellena el formulario a continuación: es
+            obligatorio para organizar tu salto.
           </p>
         </div>
         <PostPaymentBookingForm session={session} />

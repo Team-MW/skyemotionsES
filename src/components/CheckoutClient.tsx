@@ -140,7 +140,7 @@ export default function CheckoutClient() {
         </button>
 
         <p className="mt-4 text-center text-xs leading-relaxed text-white/45">
-          Tras el pago, se abrirá un formulario exclusivo para completar tus
+          Tras el pago, deberás completar un formulario obligatorio con tus
           datos del salto. El carrito se guarda en este navegador.
         </p>
 
