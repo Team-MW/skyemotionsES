@@ -7,7 +7,7 @@ import SiteShell from "@/components/SiteShell";
 export const metadata: Metadata = {
   title: "Cupones regalo",
   description:
-    "Regala un salto Sky Emotions: tándem + vídeo 269€ o vídeo + fotos 349€.",
+    "Regala un salto Sky Emotions: tándem 269€ o vídeo + fotos 349€.",
 };
 
 export default function CuponesPage() {

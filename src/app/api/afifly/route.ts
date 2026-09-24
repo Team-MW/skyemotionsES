@@ -1,10 +1,17 @@
 import { NextResponse } from "next/server";
-import { isAfiflyConfigured, listAfiflyMrgls, listAfiflyOptions, listAfiflyPacks } from "@/lib/afifly";
+import {
+  isAfiflyConfigured,
+  listAfiflyMrgls,
+  listAfiflyOptions,
+  listAfiflyPacks,
+  listAfiflyPlannings,
+  listAfiflyTarifs,
+} from "@/lib/afifly";
 import { syncPaidSessionToAfifly } from "@/lib/afifly-sync";
 import { getPaidCheckoutSession } from "@/lib/stripe";
 
 /**
- * GET — debug catalogue Afifly (packs / options / mrgls)
+ * GET — debug catalogue Afifly (packs / options / mrgls / tarifs / plannings)
  * POST — { sessionId } force sync of a paid Stripe session into Afifly
  */
 export async function GET() {
@@ -15,20 +22,26 @@ export async function GET() {
     );
   }
 
-  const [packs, options, mrgls] = await Promise.all([
+  const [packs, options, mrgls, tarifs, plannings] = await Promise.all([
     listAfiflyPacks(),
     listAfiflyOptions(),
     listAfiflyMrgls(),
+    listAfiflyTarifs(),
+    listAfiflyPlannings(),
   ]);
 
   return NextResponse.json({
     packs: packs.data,
     options: options.data,
     mrgls: mrgls.data,
+    tarifs: tarifs.data,
+    plannings: plannings.data,
     statuses: {
       packs: packs.status,
       options: options.status,
       mrgls: mrgls.status,
+      tarifs: tarifs.status,
+      plannings: plannings.status,
     },
   });
 }

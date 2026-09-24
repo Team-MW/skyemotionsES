@@ -14,6 +14,16 @@ export type AfiflyOption = {
   is_video: string | number;
 };
 export type AfiflyMrgl = { id: number; name: string };
+export type AfiflyTarif = { id: number; name: string };
+export type AfiflyPlanning = { id: number; name: string };
+export type AfiflyPlanningPlace = {
+  heure: string;
+  dispos: number;
+  resas: number;
+  places: number;
+  name: string;
+  pack_ids: number[];
+};
 
 export type AfiflySautant = {
   firstname: string;
@@ -60,13 +70,15 @@ function getBaseUrl() {
 }
 
 export function getAfiflyApiKey(): string | null {
+  const useTest = process.env.AFIFLY_USE_TEST_KEY === "true";
+  if (useTest) {
+    const key = process.env.AFIFLY_API_KEY_TEST || process.env.AFIFLY_API_KEY;
+    return key?.trim() || null;
+  }
   const key =
+    process.env.AFIFLY_API_KEY_PRODUCTION ||
     process.env.AFIFLY_API_KEY ||
-    (process.env.AFIFLY_USE_TEST_KEY === "true"
-      ? process.env.AFIFLY_API_KEY_TEST
-      : process.env.AFIFLY_API_KEY_PRODUCTION) ||
-    process.env.AFIFLY_API_KEY_TEST ||
-    null;
+    process.env.AFIFLY_API_KEY_TEST;
   return key?.trim() || null;
 }
 
@@ -120,6 +132,27 @@ export async function listAfiflyOptions() {
 
 export async function listAfiflyMrgls() {
   return afiflyFetch<AfiflyMrgl[]>("/mrgls");
+}
+
+export async function listAfiflyTarifs() {
+  return afiflyFetch<AfiflyTarif[]>("/tarifs");
+}
+
+export async function listAfiflyPlannings() {
+  return afiflyFetch<AfiflyPlanning[]>("/plannings");
+}
+
+export async function getAfiflyPlanningPlaces(params: {
+  from: string;
+  to: string;
+  planning_id: number;
+}) {
+  const query = new URLSearchParams({
+    from: params.from,
+    to: params.to,
+    planning_id: String(params.planning_id),
+  }).toString();
+  return afiflyFetch<AfiflyPlanningPlace[]>(`/planning/places?${query}`);
 }
 
 export async function createAfiflyAdherent(

@@ -19,10 +19,10 @@ export type CatalogProduct = {
 /** Tarifs officiels Sky Emotions */
 export const CATALOG: CatalogProduct[] = [
   {
-    id: "salto-tandem-video",
-    name: "Salto tándem vídeo",
-    shortName: "Tándem + vídeo",
-    description: "Salto tándem + Video",
+    id: "salto-tandem",
+    name: "Salto tándem",
+    shortName: "Salto tándem",
+    description: "Salto tándem",
     features: [
       "Instrucción teórica previa al salto",
       "20 minutos de vuelo en nuestro avión",
@@ -33,15 +33,15 @@ export const CATALOG: CatalogProduct[] = [
     priceCents: 26900,
     image: "/images/salto-freefall.jpg",
     featured: true,
-    // Afifly: pack SAUT TANDEM 4000 + VIDEO HANDYCAM
+    // Afifly: pack SAUT TANDEM 4000 (sin option vídeo)
     afiflyPackId: 7,
-    afiflyOptionIds: [1],
+    afiflyOptionIds: [],
   },
   {
     id: "salto-tandem-video-fotos",
     name: "Salto tándem vídeo + fotos",
     shortName: "Tándem + vídeo + fotos",
-    description: "Salto tándem + Video + Fotos",
+    description: "Salto tándem + Vídeo + Fotos",
     features: [
       "Instrucción teórica previa al salto",
       "Vídeo del salto, grabado por tu instructor con GoPro, en calidad FHD",
@@ -49,9 +49,9 @@ export const CATALOG: CatalogProduct[] = [
     ],
     priceCents: 34900,
     image: "/images/salto-freefall.jpg",
-    // Afifly: pack SAUT TANDEM 4000 + 2 VÍDEO (HANDYCAM + EXTERNO)
+    // Afifly: pack SAUT TANDEM 4000 + VIDEO HANDYCAM
     afiflyPackId: 7,
-    afiflyOptionIds: [2],
+    afiflyOptionIds: [1],
   },
 ];
 
@@ -64,5 +64,8 @@ export function formatEUR(cents: number) {
 }
 
 export function getProduct(id: string) {
-  return CATALOG.find((p) => p.id === id);
+  return (
+    CATALOG.find((p) => p.id === id) ||
+    (id === "salto-tandem-video" ? CATALOG[0] : undefined)
+  );
 }
