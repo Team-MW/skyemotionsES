@@ -10,6 +10,10 @@ export type CatalogProduct = {
   featured?: boolean;
   /** Optional Stripe Price ID when configured */
   stripePriceId?: string;
+  /** Afifly boutique pack id (GET /shopapi/packs) */
+  afiflyPackId?: number;
+  /** Afifly option ids to attach (GET /shopapi/options) */
+  afiflyOptionIds?: number[];
 };
 
 /** Tarifs officiels Sky Emotions */
@@ -29,6 +33,9 @@ export const CATALOG: CatalogProduct[] = [
     priceCents: 26900,
     image: "/images/salto-freefall.jpg",
     featured: true,
+    // Afifly: pack SAUT TANDEM 4000 + VIDEO HANDYCAM
+    afiflyPackId: 7,
+    afiflyOptionIds: [1],
   },
   {
     id: "salto-tandem-video-fotos",
@@ -42,6 +49,9 @@ export const CATALOG: CatalogProduct[] = [
     ],
     priceCents: 34900,
     image: "/images/salto-freefall.jpg",
+    // Afifly: pack SAUT TANDEM 4000 + 2 VÍDEO (HANDYCAM + EXTERNO)
+    afiflyPackId: 7,
+    afiflyOptionIds: [2],
   },
 ];
 

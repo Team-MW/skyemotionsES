@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import PostPaymentBookingForm from "@/components/PostPaymentBookingForm";
 import SiteShell from "@/components/SiteShell";
+import { syncPaidSessionToAfifly } from "@/lib/afifly-sync";
 import { getPaidCheckoutSession, getStripe } from "@/lib/stripe";
 
 export const metadata: Metadata = {
@@ -67,6 +68,12 @@ export default async function CheckoutSuccessPage({ searchParams }: Props) {
     );
   }
 
+  // Create Afifly customer + gift voucher(s) for centre management
+  const afifly = await syncPaidSessionToAfifly(sessionId);
+  if (afifly.errors.length > 0) {
+    console.error("[checkout/success] Afifly sync issues", afifly);
+  }
+
   return (
     <SiteShell>
       <section className="bg-background px-4 py-14 sm:px-6 sm:py-20">
@@ -81,6 +88,11 @@ export default async function CheckoutSuccessPage({ searchParams }: Props) {
             Tu pago está confirmado. Rellena el formulario a continuación: es
             obligatorio para organizar tu salto.
           </p>
+          {afifly.synced || afifly.alreadySynced ? (
+            <p className="mt-3 text-sm text-accent/90">
+              Tu ficha de cliente ya está registrada en nuestro centro.
+            </p>
+          ) : null}
         </div>
         <PostPaymentBookingForm session={session} />
       </section>
