@@ -9,9 +9,12 @@ export function getStripe(): Stripe | null {
 }
 
 export function getSiteUrl() {
+  if (process.env.NODE_ENV === "development") {
+    return "http://localhost:3000";
+  }
   return (
     process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ||
-    "http://127.0.0.1:3000"
+    "http://localhost:3000"
   );
 }
 
