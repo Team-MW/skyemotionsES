@@ -46,7 +46,7 @@ export async function POST(req: Request) {
       },
       amount_paid: session.amountTotal || 0,
       mrgl_id: mrgl_id,
-      // pack_id: ideally map this from catalog, for now we send what's expected or 6
+      pack_id: 7, // 7 = "SAUT TANDEM 4000" dans Afifly
     };
 
     const response = await fetch(`${AFIFLY_API_BASE}/adherent`, {

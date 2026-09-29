@@ -152,7 +152,7 @@ export default function PostPaymentBookingForm({ session }: Props) {
         </p>
       </div>
 
-      <div className="overflow-hidden border border-white/10 bg-white">
+      <div className="overflow-hidden border border-white/10">
         {!afiflyComplete ? (
           <AfiflyBookingForm session={session} onSuccess={() => setAfiflyComplete(true)} />
         ) : (
