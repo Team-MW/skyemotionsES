@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import type { Metadata } from "next";
 import { Barlow_Condensed, Outfit } from "next/font/google";
 import WhatsAppFloat from "@/components/WhatsAppFloat";
@@ -63,7 +64,7 @@ export const metadata: Metadata = {
     description: siteDescription,
     images: [
       {
-        url: "/icons/icon-512.png",
+        url: "/logo.png",
         width: 512,
         height: 512,
         alt: "Sky Emotions — logo",
@@ -80,7 +81,7 @@ export const metadata: Metadata = {
     card: "summary",
     title: siteTitle,
     description: siteDescription,
-    images: ["/icons/icon-512.png"],
+    images: ["/logo.png"],
   },
   robots: {
     index: true,
@@ -93,25 +94,6 @@ export const metadata: Metadata = {
       "max-video-preview": -1,
     },
   },
-  icons: {
-    icon: [
-      { url: "/favicon.ico", sizes: "any" },
-      { url: "/icons/favicon-16x16.png", sizes: "16x16", type: "image/png" },
-      { url: "/icons/favicon-32x32.png", sizes: "32x32", type: "image/png" },
-      { url: "/icons/icon-192.png", sizes: "192x192", type: "image/png" },
-      { url: "/icons/icon-512.png", sizes: "512x512", type: "image/png" },
-    ],
-    shortcut: ["/icons/icon-192.png"],
-    apple: [
-      { url: "/icons/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
-    ],
-    other: [
-      {
-        rel: "apple-touch-icon-precomposed",
-        url: "/icons/apple-touch-icon.png",
-      },
-    ],
-  },
   appleWebApp: {
     capable: true,
     title: "Sky Emotions",
@@ -120,7 +102,6 @@ export const metadata: Metadata = {
   other: {
     "geo.region": "ES-AN",
     "msapplication-TileColor": "#0e0e0e",
-    "msapplication-TileImage": "/icons/icon-192.png",
   },
 };
 const jsonLd = {
@@ -129,8 +110,8 @@ const jsonLd = {
   name: "Sky Emotions",
   description: siteDescription,
   url: siteUrl,
-  image: `${siteUrl}/icons/icon-512.png`,
-  logo: `${siteUrl}/icons/icon-512.png`,
+  image: `${siteUrl}/logo.png`,
+  logo: `${siteUrl}/logo.png`,
   slogan: "skydive & more",
   email: "info@skyemotions.es",
   address: {
@@ -145,7 +126,7 @@ const jsonLd = {
   priceRange: "€€",
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html
       lang="es"

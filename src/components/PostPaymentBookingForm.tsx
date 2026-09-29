@@ -1,40 +1,46 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useCart } from "@/context/CartContext";
 import { formatEUR } from "@/lib/catalog";
 import type { PaidSessionView } from "@/lib/booking-types";
 
+import AfiflyBookingForm from "./AfiflyBookingForm";
+
 /** Official embed: https://form.jotform.com/jsform/262644955020355 */
 const JOTFORM_ID = "262644955020355";
-const JOTFORM_SRC = `https://form.jotform.com/${JOTFORM_ID}`;
 
 type Props = {
   session: PaidSessionView;
 };
 
 function isJotformSubmission(data: unknown): boolean {
-  if (typeof data === "string") {
-    return (
-      data.includes("submission-completed") ||
-      data.includes("formSubmissionComplete") ||
-      data.includes('"action":"submission-completed"')
-    );
-  }
+  if (data === "submission-completed") return true;
   if (!data || typeof data !== "object") return false;
-  const msg = data as Record<string, unknown>;
-  const action = String(msg.action ?? msg.type ?? msg.event ?? "");
+
+  const payload = data as Record<string, unknown>;
+  const action = String(payload.action || payload.type || payload.event || "");
   return (
     action === "submission-completed" ||
-    action === "formSubmissionComplete" ||
-    action === "JFFormSubmitted"
+    action === "form-submit" ||
+    action.includes("submission")
   );
 }
 
 export default function PostPaymentBookingForm({ session }: Props) {
   const { clear } = useCart();
   const [sent, setSent] = useState(session.bookingComplete);
+  const [afiflyComplete, setAfiflyComplete] = useState(session.bookingComplete);
+  const [iframeHeight, setIframeHeight] = useState(1200);
+
+  const formSrc = useMemo(() => {
+    const url = new URL(`https://form.jotform.com/${JOTFORM_ID}`);
+    if (session.email) url.searchParams.set("email", session.email);
+    if (session.name) url.searchParams.set("name", session.name);
+    url.searchParams.set("session_id", session.id);
+    return url.toString();
+  }, [session.email, session.name, session.id]);
 
   useEffect(() => {
     clear();
@@ -43,21 +49,23 @@ export default function PostPaymentBookingForm({ session }: Props) {
   useEffect(() => {
     if (sent) return;
 
-    const onBeforeUnload = (e: BeforeUnloadEvent) => {
-      e.preventDefault();
-      e.returnValue =
-        "Debes completar el formulario obligatorio antes de salir.";
-      return e.returnValue;
-    };
+    async function markComplete() {
+      setSent(true);
+      try {
+        await fetch("/api/booking", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            sessionId: session.id,
+            jotformComplete: true,
+          }),
+        });
+      } catch {
+        // Ignorer l'erreur, le form est déjà envoyé.
+      }
+    }
 
-    window.addEventListener("beforeunload", onBeforeUnload);
-    return () => window.removeEventListener("beforeunload", onBeforeUnload);
-  }, [sent]);
-
-  useEffect(() => {
-    if (sent) return;
-
-    const onMessage = (event: MessageEvent) => {
+    function onMessage(event: MessageEvent) {
       const origin = event.origin || "";
       if (
         origin &&
@@ -66,14 +74,35 @@ export default function PostPaymentBookingForm({ session }: Props) {
       ) {
         return;
       }
-      if (isJotformSubmission(event.data)) {
-        setSent(true);
+
+      const data = event.data;
+
+      if (typeof data === "object" && data !== null) {
+        const payload = data as Record<string, unknown>;
+        const height = Number(payload.height || payload.iframeHeight);
+        if (Number.isFinite(height) && height > 400) {
+          setIframeHeight(Math.min(Math.round(height), 4000));
+        }
       }
-    };
+
+      if (typeof data === "string" && data.includes("setHeight")) {
+        const match = data.match(/(\d+)/);
+        if (match) {
+          const height = Number(match[1]);
+          if (Number.isFinite(height) && height > 400) {
+            setIframeHeight(Math.min(Math.round(height), 4000));
+          }
+        }
+      }
+
+      if (isJotformSubmission(data)) {
+        void markComplete();
+      }
+    }
 
     window.addEventListener("message", onMessage);
     return () => window.removeEventListener("message", onMessage);
-  }, [sent]);
+  }, [sent, session.id]);
 
   if (sent) {
     return (
@@ -107,26 +136,37 @@ export default function PostPaymentBookingForm({ session }: Props) {
     <div className="mx-auto max-w-3xl">
       <div className="mb-8 border border-accent/40 bg-accent/10 px-5 py-5 text-center sm:px-6">
         <p className="font-display text-xs font-bold uppercase tracking-[0.25em] text-accent">
-          Pago confirmado · formulario obligatorio
+          Pago confirmado
         </p>
         <p className="mt-2 text-sm text-white/85">
           {session.productSummary}
           {amountLabel ? ` · ${amountLabel}` : null}
         </p>
         <p className="mt-3 text-sm font-medium text-white">
-          Debes completar este formulario para organizar tu salto. No cierres
-          esta página hasta enviarlo.
+          Último paso obligatorio: completa el siguiente formulario para
+          finalizar tu reserva.
+        </p>
+        <p className="mt-1 text-xs text-white/45">
+          Sin este formulario, no podremos organizar tu salto. Esta página
+          solo es accesible después de un pago exitoso con Stripe.
         </p>
       </div>
 
-      <iframe
-        id={`JotFormIFrame-${JOTFORM_ID}`}
-        title="Formulario obligatorio de reserva"
-        src={JOTFORM_SRC}
-        allow="geolocation; microphone; camera; fullscreen"
-        className="block w-full border-0 bg-white"
-        style={{ minHeight: 720, height: "80vh" }}
-      />
+      <div className="overflow-hidden border border-white/10 bg-white">
+        {!afiflyComplete ? (
+          <AfiflyBookingForm session={session} onSuccess={() => setAfiflyComplete(true)} />
+        ) : (
+          <iframe
+            id={`JotFormIFrame-${JOTFORM_ID}`}
+            title="Formulario obligatorio de reserva"
+            src={formSrc}
+            allow="geolocation; microphone; camera; fullscreen"
+            className="block w-full border-0 bg-white"
+            style={{ width: "100%", minWidth: "100%", height: iframeHeight }}
+            scrolling="no"
+          />
+        )}
+      </div>
     </div>
   );
 }
