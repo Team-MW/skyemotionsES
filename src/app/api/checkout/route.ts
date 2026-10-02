@@ -25,7 +25,7 @@ export async function POST(req: Request) {
   }
 
   const stripe = getStripe();
-  const siteUrl = getSiteUrl();
+  const siteUrl = req.headers.get("origin") || getSiteUrl();
 
   if (!stripe) {
     return NextResponse.json(
